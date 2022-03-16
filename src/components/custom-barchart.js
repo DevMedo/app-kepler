@@ -14,8 +14,8 @@ const LineplotContainerDiv = styled.div`
     fontFamily: "ff-clan-web-pro"
   `;
 
-function CustomSidePanelsFactory() {
-// class CustomBarchart extends Component {
+function CustomBarchart() {
+  // class CustomBarchart extends Component {
   // constructor(props) {
   //   super(props);
   //   this.state = {
@@ -30,41 +30,39 @@ function CustomSidePanelsFactory() {
   //   };
   // }
 
-  componentDidMount() {
-    if (this.props.show) {
+  // componentDidMount() {
+
+  useEffect(({ show, clickedLayer }) => {
+    if (show) {
       if (this.state.clickedLayer == null) {
         this.setState({
-          clickedLayer: this.props.clickedLayer,
+          clickedLayer: clickedLayer,
         });
       }
     }
-  }
+    // }
 
-  componentDidUpdate() {
+    //componentDidUpdate() {
     console.log("*******************************************");
     console.log(this.state.clickedLayerRow);
     console.log("*******************************************");
-    let clickedLayerRow = useSelector(state => state.clickedLayerRow);
-    
+    let clickedLayerRow = useSelector((state) => state.clickedLayerRow);
+
     clickedLayerRow = clickedLayerRow.split(",");
     const new_changedData = {
       Age: clickedLayerRow[8],
       DHB: clickedLayerRow[9],
     };
-    //console.log(this.props);
 
-    if (this.props.show) {
+    if (show) {
       if (
         JSON.stringify(this.state.changedData) !==
         JSON.stringify(new_changedData)
       ) {
-        // console.log(this.props.clickedLayer.object);
-        // console.log(this.props);
         this.setState({
-          clickedLayer: this.props.clickedLayer,
+          clickedLayer: clickedLayer,
           changedData: new_changedData,
         });
-        // console.log(this.props.clickedLayer.object.data[1]);
 
         const clr_index = this.state.clickedLayerRowIndex;
         // console.log(sampleData.data.rows[clr_index][8]);
@@ -87,98 +85,103 @@ function CustomSidePanelsFactory() {
 
     // console.log(this.state.row2.x);
     // console.log(this.state.row2.y);
-  }
+  }, []);
 
-  render() {
-    if (!this.props.show) {
-      return <div />;
-    } else {
-      // console.log(this.state.row1.x);
-      // console.log(this.state.row1.y);
+  if (!show) {
+    return <div />;
+  } else {
+    // console.log(this.state.row1.x);
+    // console.log(this.state.row1.y);
 
-      // console.log(this.state.row2.x);
-      // console.log(this.state.row2.y);
+    // console.log(this.state.row2.x);
+    // console.log(this.state.row2.y);
 
-      return (
-        <div>
+    return (
+      <div>
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "250px",
+            backgroundColor: "#29323c",
+            zIndex: "3",
+            color: "#fff",
+            fontFamily: "ff-clan-web-pro",
+          }}
+        >
           <div
             style={{
-              position: "relative",
+              textAlign: "center",
               width: "100%",
               height: "250px",
-              backgroundColor: "#29323c",
-              zIndex: "3",
-              color: "#fff",
-              fontFamily: "ff-clan-web-pro",
             }}
           >
-            <div
-              style={{
-                textAlign: "center",
-                width: "100%",
-                height: "250px",
+            <BarChart
+              config={{
+                data: [
+                  {
+                    id: "",
+                    x: "Age",
+                    y: this.state.changedData.Age,
+                  },
+                  {
+                    id: "",
+                    x: "DHB",
+                    y: this.state.changedData.DHB,
+                  },
+                ],
+                groupBy: "id",
               }}
-            >
-              <BarChart
-                config={{
-                  data: [
-                    {
-                      id: "",
-                      x: "Age",
-                      y: this.state.changedData.Age,
-                    },
-                    {
-                      id: "",
-                      x: "DHB",
-                      y: this.state.changedData.DHB,
-                    },
-                  ],
-                  groupBy: "id",
-                }}
-              />
-            </div>
-          </div>
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "250px",
-              backgroundColor: "#29323c",
-              zIndex: "3",
-              color: "#fff",
-              fontFamily: "ff-clan-web-pro",
-              marginTop: "10px",
-            }}
-          >
-            <LineplotContainerDiv>
-              <LinePlot
-                style={{ textAlign: "center", width: "100%", height: "250px" }}
-                config={{
-                  data: [
-                    {
-                      id: "",
-                      x: 2,
-                      y: 12,
-                    },
-                    {
-                      id: "",
-                      x: 3,
-                      y: 10,
-                    },
-                    {
-                      id: "",
-                      x: 5,
-                      y: 3,
-                    },
-                  ],
-                }}
-              ></LinePlot>
-            </LineplotContainerDiv>
+            />
           </div>
         </div>
-      );
-    }
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "250px",
+            backgroundColor: "#29323c",
+            zIndex: "3",
+            color: "#fff",
+            fontFamily: "ff-clan-web-pro",
+            marginTop: "10px",
+          }}
+        >
+          <LineplotContainerDiv>
+            <LinePlot
+              style={{ textAlign: "center", width: "100%", height: "250px" }}
+              config={{
+                data: [
+                  {
+                    id: "",
+                    x: 2,
+                    y: 12,
+                  },
+                  {
+                    id: "",
+                    x: 3,
+                    y: 10,
+                  },
+                  {
+                    id: "",
+                    x: 5,
+                    y: 3,
+                  },
+                ],
+              }}
+            ></LinePlot>
+          </LineplotContainerDiv>
+        </div>
+      </div>
+    );
   }
 }
+//}
 
+function mapStateToProps(state) {
+  return {
+    show: getShow(state),
+    clickedLayer: getClickedLayer(state),
+  };
+}
 export default CustomBarchart;
