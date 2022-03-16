@@ -1,17 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import document from "global/document";
+import { Provider } from "react-redux";
+import { hashHistory, Router, Route } from "react-router";
+import { syncHistoryWithStore } from "react-router-redux";
+import { render } from "react-dom";
+import store from "./store";
+import App from "./App";
+const history = syncHistoryWithStore(hashHistory, store);
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+const Root = () => (
+  <Provider store={store}>
+    <Router history={history}>
+      <Route path="/" component={App} />
+    </Router>
+  </Provider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+render(<Root />, document.body.appendChild(document.createElement("div")));

@@ -1,0 +1,9 @@
+.my_csb{
+    background: grey;
+    position: absolute;
+    color: white;
+    left: 300px;
+    z-index: 100;
+    width: 340px;
+    height: 100%;
+}
