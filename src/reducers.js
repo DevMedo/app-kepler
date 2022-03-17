@@ -60,7 +60,7 @@ const initialAppState = {
   clickedLayer: null,
   clickedLayerRow: null,
   clickedLayerRowIndex: null,
-  //show: false,
+  show: false,
 };
 
 // CONSTANTS

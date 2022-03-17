@@ -3,7 +3,7 @@ import { BarChart, LinePlot } from "d3plus-react";
 import styled from "styled-components";
 import sampleData, { config } from "../data/sample-data";
 import { useSelector } from "react-redux";
-
+import store from "../store";
 const LineplotContainerDiv = styled.div`
     position: "relative",
     width: "100%",
@@ -32,9 +32,25 @@ function CustomBarchart() {
 
   // componentDidMount() {
 
-  useEffect(({ show, clickedLayer }) => {
+  const [show, setShow] = useState(false);
+  const [clickedLayer, setClickedLayer] = useState(null);
+
+  useEffect(() => {
+    //console.log(store.getState().app);
+    const state = store.getState().app;
+    setShow(state.show);
+    setClickedLayer(state.clickedLayer);
+    console.log(
+      "%%%%%%%%%%%%%%%%%%%%%%% STATE CHANGES - useEffect Fired %%%%%%%%%%%%%%%%%%%%%%%"
+    );
+    console.log(state.show);
+    console.log(state.clickedLayer);
+    console.log(
+      "%%%%%%%%%%%%%%%%%%%%%%% STATE CHANGES - useEffect Fired %%%%%%%%%%%%%%%%%%%%%%%"
+    );
+
     if (show) {
-      if (this.state.clickedLayer == null) {
+      if (state.clickedLayer == null) {
         this.setState({
           clickedLayer: clickedLayer,
         });
@@ -44,17 +60,27 @@ function CustomBarchart() {
 
     //componentDidUpdate() {
     console.log("*******************************************");
-    console.log(this.state.clickedLayerRow);
+    console.log(state.clickedLayerRow);
     console.log("*******************************************");
-    let clickedLayerRow = useSelector((state) => state.clickedLayerRow);
+    // let clickedLayerRow = useSelector((state) => state.clickedLayerRow);
+    let clickedLayerRow = state.clickedLayerRow;
 
-    clickedLayerRow = clickedLayerRow.split(",");
-    const new_changedData = {
-      Age: clickedLayerRow[8],
-      DHB: clickedLayerRow[9],
+    let new_changedData = {
+      Age: 0,
+      DHB: 0,
     };
 
+    if (clickedLayerRow) {
+      clickedLayerRow = clickedLayerRow.split(",");
+
+      new_changedData = {
+        Age: clickedLayerRow[8],
+        DHB: clickedLayerRow[9],
+      };
+    }
+
     if (show) {
+      console.log("SHOW IS TRUEEEEEEEEE !!! SHOW IS TRUEEEEEEEEE !!!");
       if (
         JSON.stringify(this.state.changedData) !==
         JSON.stringify(new_changedData)
@@ -64,7 +90,7 @@ function CustomBarchart() {
           changedData: new_changedData,
         });
 
-        const clr_index = this.state.clickedLayerRowIndex;
+        const clr_index = state.clickedLayerRowIndex;
         // console.log(sampleData.data.rows[clr_index][8]);
 
         this.setState({
@@ -85,10 +111,10 @@ function CustomBarchart() {
 
     // console.log(this.state.row2.x);
     // console.log(this.state.row2.y);
-  }, []);
+  }, [show, clickedLayer]);
 
   if (!show) {
-    return <div />;
+    return <div>N</div>;
   } else {
     // console.log(this.state.row1.x);
     // console.log(this.state.row1.y);
@@ -108,6 +134,8 @@ function CustomBarchart() {
             color: "#fff",
             fontFamily: "ff-clan-web-pro",
           }}
+          // this.state.changedData.Age,
+          // this.state.changedData.DHB,
         >
           <div
             style={{
@@ -122,12 +150,12 @@ function CustomBarchart() {
                   {
                     id: "",
                     x: "Age",
-                    y: this.state.changedData.Age,
+                    y: 15,
                   },
                   {
                     id: "",
                     x: "DHB",
-                    y: this.state.changedData.DHB,
+                    y: 10,
                   },
                 ],
                 groupBy: "id",
@@ -178,10 +206,10 @@ function CustomBarchart() {
 }
 //}
 
-function mapStateToProps(state) {
-  return {
-    show: getShow(state),
-    clickedLayer: getClickedLayer(state),
-  };
-}
+// function mapStateToProps(state) {
+//   return {
+//     show: getShow(state),
+//     clickedLayer: getClickedLayer(state),
+//   };
+// }
 export default CustomBarchart;

@@ -66,6 +66,8 @@ class App extends Component {
     // console.log(dataset);
     // addDataToMap action to inject dataset into kepler.gl instance
     this.props.dispatch(addDataToMap({ datasets: sampleData, config: config }));
+    console.log("PROPS");
+    console.log(this.props);
   }
 
   componentDidUpdate() {
