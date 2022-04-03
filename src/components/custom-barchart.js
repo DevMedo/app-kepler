@@ -38,8 +38,10 @@ function CustomBarchart() {
   useEffect(() => {
     //console.log(store.getState().app);
     const state = store.getState().app;
-    setShow(state.show);
-    setClickedLayer(state.clickedLayer);
+    console.log("STORE IN CONSOLE %%%%%%%%%%%%%%%%%%%%%%% STORE IN CONSOLE ")
+    console.log(store.getState())
+    //setShow(state.show);
+    //setClickedLayer(state.clickedLayer);
     console.log(
       "%%%%%%%%%%%%%%%%%%%%%%% STATE CHANGES - useEffect Fired %%%%%%%%%%%%%%%%%%%%%%%"
     );
@@ -78,7 +80,7 @@ function CustomBarchart() {
         DHB: clickedLayerRow[9],
       };
     }
-
+console.log('SHOW :'+show)
     if (show) {
       console.log("SHOW IS TRUEEEEEEEEE !!! SHOW IS TRUEEEEEEEEE !!!");
       if (
@@ -114,7 +116,7 @@ function CustomBarchart() {
   }, [show, clickedLayer]);
 
   if (!show) {
-    return <div>N</div>;
+    return <div>Nothing <br/>(show is {show})</div>;
   } else {
     // console.log(this.state.row1.x);
     // console.log(this.state.row1.y);

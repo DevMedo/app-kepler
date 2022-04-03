@@ -32,7 +32,7 @@ import CustomPanelToggleFactory from "./components/panel-toggle";
 import CustomSidePanelsFactory from "./components/custom-panel";
 import CustomMapPopoverFactory from "./components/custom-map-popover";
 import CustomBarchart from "./components/custom-barchart";
-
+import store from "./store";
 // Inject custom components
 const KeplerGl = injectComponents([
   [SidebarFactory, CustomSidebarFactory],
@@ -47,9 +47,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     // console.log(props);
-    this.state = {};
+    this.state = store.getState().app;
   }
 
+  
   componentDidMount() {
     this.setState(this.props.app);
     // Use processCsvData helper to convert csv file into kepler.gl structure {fields, rows}
@@ -93,11 +94,15 @@ class App extends Component {
           clickedLayerRow: found,
           clickedLayerRowIndex: this.props.app.clickedLayer.index,
         });
+        
       }
     } else {
       console.log("Props is NULL BOYYYYYYYYYYYYYY");
       return null;
     }
+
+    console.log("THIS . STATE")
+    console.log(this.state)
   }
 
   // This method is used as reference to show how to export the current kepler.gl instance configuration
